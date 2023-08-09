@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Displaying the error message</title>
+</head>
+<body>
+    <select id="division-1">
+
+    </select>
+
+    <p id="para"></p>
+    <p id="para1"></p>
+    <p id="para2"></p>
+    <p id="para3"></p>
+    <p id="para4"></p>
+
+
+    <script>
+
+        let select=document.querySelector("#division-1");
+        let selection=document.querySelector("#para");
+        let para=document.getElementById("para");
+        let para1=document.getElementById("para1");
+        let para2=document.getElementById("para2");
+        let para3=document.getElementById("para3");
+        let para4=document.getElementById("para4");
+        async function fetching(){
+       
+            try{
+                const url="https://pokeapi.co/api/v2/pokemon/"
+                let res=await fetch(url);
+                let data=await res.json();
+                for(let a of data.results){
+                    let option=document.createElement("option")
+                    option.text=a.name;
+                    option.value=a.url;
+                    select.appendChild(option);
+                }
+
+                select.addEventListener("change",()=>{
+                    async function showDetails(){
+                        const miniurl=select.value;
+                        let res1=await fetch(miniurl);
+                        let data1=await res1.json();
+                        console.log(data1,"ajithganapathy");
+                        para.innerText=`name:${data1.name}`;
+                        para1.innerText=`height:${data1.height}`
+                        para2.innerText=`weight:${data1.weight}`
+                        para3.innerText=`order:${data1.order}`
+                        para4.innerText=`id:${data1.id}`
+
+                    }
+                    showDetails();
+                })
+            }
+            catch(error){
+
+                console.log(error);
+                let error_message=error.toString().split(":")[0]
+                selection.innerText=error_message;
+            }
+        }
+        fetching();
+
+    </script>
+</body>
+</html>
